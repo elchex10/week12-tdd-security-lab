@@ -29,6 +29,16 @@ def test_welcome_expiry_boundary():
         apply_promo(10_000, "WELCOME", date(2027, 1, 1))
 
 
+def test_codes_ignore_case_and_surrounding_whitespace():
+    assert apply_promo(10_000, "  save10 ", TODAY) == 9_000
+
+
+def test_unknown_code_raises_and_total_never_goes_below_zero():
+    with pytest.raises(PromoError):
+        apply_promo(10_000, "NOT_A_CODE", TODAY)
+    assert apply_promo(0, "WELCOME", TODAY) == 0
+
+
 # Next: write a failing test for the next rule, make it pass, refactor. Repeat.
 # Think edge cases: rounding, case/whitespace, minimums, expiry date boundary,
 # unknown code, and a total that would otherwise go negative.
