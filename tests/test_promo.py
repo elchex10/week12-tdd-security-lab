@@ -38,7 +38,6 @@ def test_unknown_code_raises_and_total_never_goes_below_zero():
         apply_promo(10_000, "NOT_A_CODE", TODAY)
     assert apply_promo(0, "WELCOME", TODAY) == 0
 
-
 # Next: write a failing test for the next rule, make it pass, refactor. Repeat.
 # Think edge cases: rounding, case/whitespace, minimums, expiry date boundary,
 # unknown code, and a total that would otherwise go negative.

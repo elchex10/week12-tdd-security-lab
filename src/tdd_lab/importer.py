@@ -1,12 +1,11 @@
-"""Legacy data importer -- INTENTIONALLY INSECURE."""
-import pickle
+"""Data importer using formats that do not execute arbitrary code."""
+import ast
+import json
 
 
 def load_session(blob: bytes):
-    # Deserializing untrusted bytes can execute arbitrary code.
-    return pickle.loads(blob)
+    return json.loads(blob)
 
 
 def compute_discount(expression: str):
-    # "Flexible" pricing rules typed in by an admin.
-    return eval(expression)
+    return ast.literal_eval(expression)
