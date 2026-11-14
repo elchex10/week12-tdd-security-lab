@@ -24,7 +24,8 @@ class PromoError(ValueError):
 
 def apply_promo(subtotal_cents: int, code: str, today: date) -> int:
     """Return the new total in cents after applying ``code``."""
-    if code.strip().upper() == "SAVE10":
-        discount = subtotal_cents * 10 // 100
-        return max(subtotal_cents - discount, 0)
+    normalized_code = code.strip().upper()
+    if normalized_code == "SAVE10":
+        discount_cents = subtotal_cents * 10 // 100
+        return max(subtotal_cents - discount_cents, 0)
     raise PromoError("Unknown or ineligible promo code")
