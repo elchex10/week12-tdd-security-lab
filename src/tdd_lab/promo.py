@@ -28,4 +28,8 @@ def apply_promo(subtotal_cents: int, code: str, today: date) -> int:
     if normalized_code == "SAVE10":
         discount_cents = subtotal_cents * 10 // 100
         return max(subtotal_cents - discount_cents, 0)
+    if normalized_code == "FLAT5":
+        if subtotal_cents < 2_000:
+            raise PromoError("FLAT5 requires a subtotal of at least $20.00")
+        return max(subtotal_cents - 500, 0)
     raise PromoError("Unknown or ineligible promo code")
