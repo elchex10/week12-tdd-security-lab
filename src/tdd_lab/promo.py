@@ -26,11 +26,15 @@ def _apply_discount(subtotal_cents: int, discount_cents: int) -> int:
     return max(subtotal_cents - discount_cents, 0)
 
 
+def _percentage_discount(subtotal_cents: int, percentage: int) -> int:
+    return subtotal_cents * percentage // 100
+
+
 def apply_promo(subtotal_cents: int, code: str, today: date) -> int:
     """Return the new total in cents after applying ``code``."""
     normalized_code = code.strip().upper()
     if normalized_code == "SAVE10":
-        discount_cents = subtotal_cents * 10 // 100
+        discount_cents = _percentage_discount(subtotal_cents, 10)
         return _apply_discount(subtotal_cents, discount_cents)
     if normalized_code == "FLAT5":
         if subtotal_cents < 2_000:
@@ -39,6 +43,6 @@ def apply_promo(subtotal_cents: int, code: str, today: date) -> int:
     if normalized_code == "WELCOME":
         if today > date(2026, 12, 31):
             raise PromoError("WELCOME has expired")
-        discount_cents = subtotal_cents * 15 // 100
+        discount_cents = _percentage_discount(subtotal_cents, 15)
         return _apply_discount(subtotal_cents, discount_cents)
     raise PromoError("Unknown or ineligible promo code")
