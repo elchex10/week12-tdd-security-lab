@@ -23,6 +23,12 @@ def test_flat5_minimum_boundary():
         apply_promo(1_999, "FLAT5", TODAY)
 
 
+def test_welcome_expiry_boundary():
+    assert apply_promo(10_000, "WELCOME", date(2026, 12, 31)) == 8_500
+    with pytest.raises(PromoError):
+        apply_promo(10_000, "WELCOME", date(2027, 1, 1))
+
+
 # Next: write a failing test for the next rule, make it pass, refactor. Repeat.
 # Think edge cases: rounding, case/whitespace, minimums, expiry date boundary,
 # unknown code, and a total that would otherwise go negative.
