@@ -36,4 +36,9 @@ def apply_promo(subtotal_cents: int, code: str, today: date) -> int:
         if subtotal_cents < 2_000:
             raise PromoError("FLAT5 requires a subtotal of at least $20.00")
         return _apply_discount(subtotal_cents, 500)
+    if normalized_code == "WELCOME":
+        if today > date(2026, 12, 31):
+            raise PromoError("WELCOME has expired")
+        discount_cents = subtotal_cents * 15 // 100
+        return _apply_discount(subtotal_cents, discount_cents)
     raise PromoError("Unknown or ineligible promo code")
